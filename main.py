@@ -12,8 +12,13 @@ class Product:
 
     @classmethod
     def new_product(cls, product_data):
-        return cls(product_data["name"], product_data["description"], product_data["price"], product_data["quantity"])
-    
+        return cls(
+            product_data["name"],
+            product_data["description"],
+            product_data["price"],
+            product_data["quantity"],
+        )
+
     @property
     def price(self):
         return self.__price
@@ -24,7 +29,7 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
-    
+
 
 class Category:
     category_count = 0
@@ -48,8 +53,10 @@ class Category:
     def products(self):
         lines = []
         for product in self.__products:
-            lines.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
-        return "\n".join(lines)
+            lines.append(
+                f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            )
+        return "".join(lines)
 
 
 if __name__ == "__main__":

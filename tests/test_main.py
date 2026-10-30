@@ -51,6 +51,7 @@ def test_product_count_from_constructor(product):
 
     assert Category.product_count == before + 2
 
+
 def test_add_product(category):
     before = Category.product_count
     second = Product("Vivo", "", 20000.0, 14)
@@ -62,6 +63,7 @@ def test_add_product(category):
         "Vivo, 20000.0 руб. Остаток: 14 шт."
     )
 
+
 def test_products_empty():
     category = Category("Пустая", "", [])
     assert category.products == ""
@@ -70,6 +72,7 @@ def test_products_empty():
 def test_products_private(category):
     with pytest.raises(AttributeError):
         _ = category.__products
+
 
 def test_new_product():
     data = {"name": "Vivo", "description": "Синий", "price": 20000.0, "quantity": 14}
@@ -93,6 +96,7 @@ def test_price_increase(product, capsys):
     assert product.price == 200000.0
     assert capsys.readouterr().out == ""
 
+
 def test_product_count(product):
     before = Category.product_count
     category = Category("Тест", "Описание", [product])
@@ -101,11 +105,13 @@ def test_product_count(product):
     assert category.product_count == Category.product_count
 
 
-
 @pytest.mark.parametrize("invalid_price", [0, -5])
 def test_price_rejects_nonpositive(product, invalid_price, capsys):
     old_price = product.price
     product.price = invalid_price
 
     assert product.price == old_price
-    assert capsys.readouterr().out.strip() == "Цена не должна быть нулевая или отрицательная"
+    assert (
+        capsys.readouterr().out.strip()
+        == "Цена не должна быть нулевая или отрицательная"
+    )
