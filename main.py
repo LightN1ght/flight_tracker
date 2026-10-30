@@ -17,7 +17,6 @@ class Category:
 
     name: str
     description: str
-    products: list
 
     def __init__(self, name, description, products):
         self.name = name
@@ -29,6 +28,13 @@ class Category:
     def add_product(self, product):
         self.__products.append(product)
         Category.product_count += 1
+
+    @property
+    def products(self):
+        lines = []
+        for product in self.__products:
+            lines.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
+        return "\n".join(lines)
 
 
 if __name__ == "__main__":

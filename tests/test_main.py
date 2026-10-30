@@ -4,11 +4,11 @@ from main import Category, Product
 
 
 @pytest.fixture()
-def category():
+def category(products):
     return Category(
         "Смартфоны",
         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
-        ["Samsung", "Vivo", "Pixel"],
+        [products],
     )
 
 
@@ -25,7 +25,7 @@ def test_init_category(category):
         category.description
         == "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
     )
-    assert category.products == ["Samsung", "Vivo", "Pixel"]
+    assert category.products == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
 
 
 def test_init_products(products):
