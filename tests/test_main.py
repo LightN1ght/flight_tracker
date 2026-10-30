@@ -25,7 +25,7 @@ def test_init_category(category):
         category.description
         == "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
     )
-    assert category.products == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
+    assert category.products == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n"
 
 
 def test_init_products(product):
@@ -60,7 +60,7 @@ def test_add_product(category):
     assert Category.product_count == before + 1
     assert category.products == (
         "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n"
-        "Vivo, 20000.0 руб. Остаток: 14 шт."
+        "Vivo, 20000.0 руб. Остаток: 14 шт.\n"
     )
 
 
