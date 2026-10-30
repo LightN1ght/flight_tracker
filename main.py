@@ -7,9 +7,17 @@ class Product:
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price
         self.quantity = quantity
 
+    @classmethod
+    def new_product(cls, product_data):
+        return cls(product_data["name"], product_data["description"], product_data["price"], product_data["quantity"])
+    
+    @property
+    def price(self):
+        return self.__price
+    
 
 class Category:
     category_count = 0
