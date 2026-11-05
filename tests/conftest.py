@@ -1,5 +1,7 @@
 import pytest
+
 from src.product import Product
+
 
 @pytest.fixture()
 def product():
