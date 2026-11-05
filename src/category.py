@@ -24,3 +24,9 @@ class Category:
                 f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
             )
         return "".join(lines)
+
+    def __str__(self):
+        quantity = 0
+        for item in self.__products:
+            quantity += item.quantity
+        return f"{self.name}, количество продуктов: {quantity} шт."
