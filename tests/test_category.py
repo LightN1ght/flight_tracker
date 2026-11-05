@@ -1,8 +1,6 @@
 import pytest
-
-from src.category import Category
 from src.product import Product
-
+from src.category import Category
 
 @pytest.fixture()
 def category(product):
@@ -11,14 +9,6 @@ def category(product):
         "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
         [product],
     )
-
-
-@pytest.fixture()
-def product():
-    return Product(
-        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5
-    )
-
 
 def test_init_category(category):
     assert category.name == "Смартфоны"
@@ -30,12 +20,13 @@ def test_init_category(category):
         category.products == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n"
     )
 
+def test_category_str(product):
+    second = Product("Vivo", "", 20000.0, 14)
+    category = Category("Смартфоны", "", [product, second])
 
-def test_init_products(product):
-    assert product.name == "Samsung Galaxy S23 Ultra"
-    assert product.description == "256GB, Серый цвет, 200MP камера"
-    assert product.price == 180000.0
-    assert product.quantity == 5
+    assert str(category) == "Смартфоны, количество продуктов: 19 шт."
+
+
 
 
 def test_category_count():
@@ -77,28 +68,6 @@ def test_products_private(category):
         _ = category.__products
 
 
-def test_new_product():
-    data = {"name": "Vivo", "description": "Синий", "price": 20000.0, "quantity": 14}
-    product = Product.new_product(data)
-
-    assert isinstance(product, Product)
-    assert product.name == "Vivo"
-    assert product.description == "Синий"
-    assert product.price == 20000.0
-    assert product.quantity == 14
-
-
-def test_price_private(product):
-    with pytest.raises(AttributeError):
-        _ = product.__price
-
-
-def test_price_increase(product, capsys):
-    product.price = 200000.0
-
-    assert product.price == 200000.0
-    assert capsys.readouterr().out == ""
-
 
 def test_product_count(product):
     before = Category.product_count
@@ -107,14 +76,3 @@ def test_product_count(product):
     assert Category.product_count == before + 1
     assert category.product_count == Category.product_count
 
-
-@pytest.mark.parametrize("invalid_price", [0, -5])
-def test_price_rejects_nonpositive(product, invalid_price, capsys):
-    old_price = product.price
-    product.price = invalid_price
-
-    assert product.price == old_price
-    assert (
-        capsys.readouterr().out.strip()
-        == "Цена не должна быть нулевая или отрицательная"
-    )
