@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
+from collections.abc import Mapping
 from time import monotonic, sleep
 
 import requests
-
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 OPENSKY_URL = "https://opensky-network.org/api/states/all"
@@ -54,7 +54,10 @@ class OpenSkyAircraftAPI(AircraftAPI):
             sleep(remaining_delay)
         self._last_geocoding_request = monotonic()
 
-        places = self._request_json("Nominatim", "GET", self._nominatim_url,
+        places = self._request_json(
+            "Nominatim",
+            "GET",
+            self._nominatim_url,
             params={"country": country, "featureType": "country", "format": "jsonv2", "limit": 1},
             headers={"User-Agent": "LightN1ght-flight-tracker/0.1 (GitHub: LightN1ght/flight_tracker)"},
         )
@@ -95,11 +98,13 @@ class OpenSkyAircraftAPI(AircraftAPI):
         return states
 
     def _get_opensky_headers(self) -> dict[str, str]:
-        if not self._client_id:
+        if not self._client_id or not self._client_secret:
             return {}
 
         data = self._request_json(
-            "OpenSky", "POST", TOKEN_URL,
+            "OpenSky",
+            "POST",
+            TOKEN_URL,
             data={
                 "grant_type": "client_credentials",
                 "client_id": self._client_id,
@@ -112,9 +117,17 @@ class OpenSkyAircraftAPI(AircraftAPI):
         return {"Authorization": f"Bearer {token}"}
 
     @staticmethod
-    def _request_json(service: str, method: str, url: str, **kwargs: object) -> object:
+    def _request_json(
+        service: str,
+        method: str,
+        url: str,
+        *,
+        params: Mapping[str, str | int | float] | None = None,
+        headers: dict[str, str] | None = None,
+        data: dict[str, str] | None = None,
+    ) -> object:
         try:
-            response = requests.request(method, url, timeout=TIMEOUT, **kwargs)
+            response = requests.request(method, url, timeout=TIMEOUT, params=params, headers=headers, data=data)
             response.raise_for_status()
         except requests.Timeout as error:
             raise APIError(f"{service} не ответил вовремя.") from error

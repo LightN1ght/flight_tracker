@@ -58,11 +58,13 @@ def test_invalid_aeroplane_data(aeroplane, field, value):
 
 
 def test_cast_to_object_list():
-    result = Aeroplane.cast_to_object_list([
-        ["A1B2C3", " ", "Switzerland", None, None, 7, 46, -10, True, 0],
-        ["bad", None, "France", None, None, 7, 46, None, True, None],
-        "invalid row",
-    ])
+    result = Aeroplane.cast_to_object_list(
+        [
+            ["A1B2C3", " ", "Switzerland", None, None, 7, 46, -10, True, 0],
+            ["bad", None, "France", None, None, 7, 46, None, True, None],
+            "invalid row",
+        ]
+    )
 
     assert len(result) == 1
     assert result[0].icao24 == "a1b2c3"

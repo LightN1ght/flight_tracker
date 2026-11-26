@@ -113,4 +113,6 @@ class Aeroplane:
         altitude = f"{self.baro_altitude:.1f} м" if self.baro_altitude is not None else "нет данных"
         speed = f"{self.velocity:.1f} м/с" if self.velocity is not None else "нет данных"
         status = "на земле" if self.on_ground else "в воздухе"
-        return f"{callsign} ({self.icao24}) | {self.origin_country} | Высота: {altitude} | Скорость: {speed} | {status}"
+        return (
+            f"{callsign} ({self.icao24}) | {self.origin_country} | Высота: {altitude} | Скорость: {speed} | {status}"
+        )
