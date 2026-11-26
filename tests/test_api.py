@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import pytest
 import requests
 
-from src.api import APIError, AircraftAPI, NOMINATIM_URL, OPENSKY_URL, TOKEN_URL, OpenSkyAircraftAPI
+from src.api import NOMINATIM_URL, OPENSKY_URL, TOKEN_URL, AircraftAPI, APIError, OpenSkyAircraftAPI
 
 
 @pytest.fixture
@@ -31,7 +31,12 @@ def test_get_aeroplanes(monkeypatch, search_result):
 
     first, second = request.call_args_list
     assert first.args == ("GET", NOMINATIM_URL)
-    assert first.kwargs["params"] == {"country": "Switzerland", "featureType": "country", "format": "jsonv2", "limit": 1}
+    assert first.kwargs["params"] == {
+        "country": "Switzerland",
+        "featureType": "country",
+        "format": "jsonv2",
+        "limit": 1,
+    }
     assert "flight-tracker" in first.kwargs["headers"]["User-Agent"]
     assert second.args == ("GET", OPENSKY_URL)
     assert second.kwargs["params"] == {"lamin": 45.8, "lamax": 47.8, "lomin": 5.9, "lomax": 10.5}
@@ -97,7 +102,9 @@ def test_invalid_states(monkeypatch, search_result, data):
         OpenSkyAircraftAPI().get_aeroplanes("Spain")
 
 
-@pytest.mark.parametrize("error, message", [(requests.Timeout, "не ответил вовремя"), (requests.ConnectionError, "подключиться")])
+@pytest.mark.parametrize(
+    "error, message", [(requests.Timeout, "не ответил вовремя"), (requests.ConnectionError, "подключиться")]
+)
 def test_connection_errors(monkeypatch, error, message):
     monkeypatch.setattr("src.api.requests.request", Mock(side_effect=error))
 
@@ -127,7 +134,11 @@ def test_invalid_json(monkeypatch):
 
 def test_opensky_authentication(monkeypatch, search_result):
     request = Mock(
-        side_effect=[mock_response(search_result), mock_response({"access_token": "example"}), mock_response({"states": []})]
+        side_effect=[
+            mock_response(search_result),
+            mock_response({"access_token": "example"}),
+            mock_response({"states": []}),
+        ]
     )
     monkeypatch.setattr("src.api.requests.request", request)
 

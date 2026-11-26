@@ -3,7 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from src.api import APIError, NOMINATIM_URL, OpenSkyAircraftAPI
+from src.api import NOMINATIM_URL, APIError, OpenSkyAircraftAPI
 from src.cli import user_interaction
 from src.json_saver import JSONSaver
 

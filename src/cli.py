@@ -1,5 +1,5 @@
 from src.aeroplane import Aeroplane
-from src.api import APIError, AircraftAPI
+from src.api import AircraftAPI, APIError
 from src.base_saver import AeroplaneStorage, StorageError
 
 
@@ -9,9 +9,7 @@ def get_top_aeroplanes(aeroplanes: list[Aeroplane], top_n: int) -> list[Aeroplan
         raise ValueError("Количество самолётов должно быть больше нуля.")
 
     by_altitude = [
-        (altitude, aeroplane)
-        for aeroplane in aeroplanes
-        if (altitude := aeroplane.baro_altitude) is not None
+        (altitude, aeroplane) for aeroplane in aeroplanes if (altitude := aeroplane.baro_altitude) is not None
     ]
     by_altitude.sort(key=lambda item: item[0], reverse=True)
     return [aeroplane for _, aeroplane in by_altitude[:top_n]]
@@ -79,5 +77,5 @@ def user_interaction(api: AircraftAPI, storage: AeroplaneStorage) -> None:
                 print(aeroplane)
     except (APIError, StorageError, ValueError) as error:
         print(f"Программа: {error}")
-    except (EOFError, KeyboardInterrupt):
+    except EOFError, KeyboardInterrupt:
         print("\nПрограмма: Работа завершена.")

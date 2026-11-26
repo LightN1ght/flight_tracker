@@ -21,11 +21,13 @@ def test_main_saves_and_displays_aeroplanes(output_path, monkeypatch, capsys):
     nominatim = Mock()
     nominatim.json.return_value = [{"boundingbox": ["45.8", "47.8", "5.9", "10.5"]}]
     opensky = Mock()
-    opensky.json.return_value = {"states": [
-        ["a1b2c3", "TEST1", "United Kingdom", None, None, 7, 46, 9000, False, 240],
-        ["a1b2c4", "TEST2", "France", None, None, 7, 46, 12000, False, 220],
-        ["a1b2c5", None, "Switzerland", None, None, 7, 46, None, True, None],
-    ]}
+    opensky.json.return_value = {
+        "states": [
+            ["a1b2c3", "TEST1", "United Kingdom", None, None, 7, 46, 9000, False, 240],
+            ["a1b2c4", "TEST2", "France", None, None, 7, 46, 12000, False, 220],
+            ["a1b2c5", None, "Switzerland", None, None, 7, 46, None, True, None],
+        ]
+    }
     request = Mock(side_effect=[nominatim, opensky])
     monkeypatch.setattr("src.api.requests.request", request)
     monkeypatch.setenv("NOMINATIM_URL", "https://nominatim.example/search")

@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import pytest
 
 from src.aeroplane import Aeroplane
-from src.api import APIError, AircraftAPI
+from src.api import AircraftAPI, APIError
 from src.base_saver import AeroplaneStorage
 from src.cli import get_top_aeroplanes, user_interaction
 

@@ -7,7 +7,6 @@ from tempfile import NamedTemporaryFile
 from src.aeroplane import Aeroplane
 from src.base_saver import AeroplaneStorage, StorageError
 
-
 DEFAULT_PATH = Path(__file__).resolve().parents[1] / "data" / "aeroplanes.json"
 
 
@@ -58,9 +57,7 @@ class JSONSaver(AeroplaneStorage):
         temporary_path = None
         try:
             self._path.parent.mkdir(parents=True, exist_ok=True)
-            with NamedTemporaryFile(
-                mode="w", encoding="utf-8", dir=self._path.parent, delete=False
-            ) as file:
+            with NamedTemporaryFile(mode="w", encoding="utf-8", dir=self._path.parent, delete=False) as file:
                 temporary_path = Path(file.name)
                 json.dump(list(records.values()), file, ensure_ascii=False, indent=4)
                 file.write("\n")
